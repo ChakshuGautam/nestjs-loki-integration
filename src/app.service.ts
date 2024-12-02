@@ -7,7 +7,9 @@ export class AppService {
   getHello(): string {
     // this.logger.verbose({ foo: 'bar' }, 'baz %s', 'qux');
     this.logger.debug('foo %s %o', 'bar', { baz: 'qux' });
-    // this.logger.warn('foobar');
+    this.logger.warn('foobar');
+    this.logger.error('foobar');
+    this.logger.verbose('foobar');
     return 'Hello World!';
   }
 }

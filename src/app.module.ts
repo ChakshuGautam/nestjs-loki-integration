@@ -17,10 +17,15 @@ import { LoggerModule } from 'nestjs-pino';
             {
               level: process.env.NODE_ENV !== 'production' ? 'debug' : 'warn',
               target: 'pino-loki',
+
               options: {
                 batching: true,
-                interval: 120,
+                interval: 5,
                 host: 'http://localhost:3100',
+                labels: {
+                  app: 'TestService',
+                  namespace: process.env.NODE_ENV || 'development',
+                },
               },
             },
           ],
