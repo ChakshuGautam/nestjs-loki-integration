@@ -19,20 +19,7 @@
     "fiscalYearStartMonth": 0,
     "graphTooltip": 0,
     "id": 2,
-    "links": [
-        {
-            "asDropdown": false,
-            "icon": "external link",
-            "includeVars": false,
-            "keepTime": false,
-            "tags": [],
-            "targetBlank": false,
-            "title": "New link",
-            "tooltip": "",
-            "type": "dashboards",
-            "url": ""
-        }
-    ],
+    "links": [],
     "panels": [
         {
             "datasource": {
@@ -480,12 +467,54 @@
                         "uid": "P8E80F9AEF21F6940"
                     },
                     "editorMode": "code",
-                    "expr": "{level=~\"$level\"}\n| json \n| res_statusCode=~\"$status\"\n| line_format `{{ .msg }} {{ .app }} {{ .res_statusCode }} {{ .req_method }} {{ .req_url }} {{ .responseTime }}ms`",
+                    "expr": "{level=~\"$level\"}\n| json \n| res_statusCode=~\"$status\"\n| line_format `{{ .msg }} {{ .app }} {{ .res_statusCode }} {{ .req_id }} {{ .req_method }} {{ .req_url }} {{ .responseTime }}ms`",
                     "queryType": "range",
                     "refId": "A"
                 }
             ],
             "title": "App Logs",
+            "type": "logs"
+        },
+        {
+            "datasource": {
+                "type": "loki",
+                "uid": "P8E80F9AEF21F6940"
+            },
+            "fieldConfig": {
+                "defaults": {},
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 14,
+                "w": 24,
+                "x": 0,
+                "y": 25
+            },
+            "id": 7,
+            "options": {
+                "dedupStrategy": "none",
+                "enableLogDetails": true,
+                "prettifyLogMessage": false,
+                "showCommonLabels": false,
+                "showLabels": false,
+                "showTime": true,
+                "sortOrder": "Descending",
+                "wrapLogMessage": true
+            },
+            "pluginVersion": "11.3.1",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "loki",
+                        "uid": "P8E80F9AEF21F6940"
+                    },
+                    "editorMode": "code",
+                    "expr": "{level=~\"$level\"} | json | context != `RoutesResolver` | context != `RouterExplorer` | context != \"\" | line_format `{{ .app }} {{ .req_id }}{{ printf \"\\033[37m %s\" .req_url }} {{ printf \"\\033[90m %s\" .msg }}`",
+                    "queryType": "range",
+                    "refId": "A"
+                }
+            ],
+            "title": "All Logs",
             "type": "logs"
         }
     ],
@@ -571,10 +600,10 @@
             {
                 "current": {
                     "text": [
-                        "304"
+                        "$__all"
                     ],
                     "value": [
-                        "304"
+                        "$__all"
                     ]
                 },
                 "includeAll": true,
@@ -584,11 +613,16 @@
                 "options": [
                     {
                         "selected": false,
+                        "text": "200",
+                        "value": "200"
+                    },
+                    {
+                        "selected": false,
                         "text": "201",
                         "value": "201"
                     },
                     {
-                        "selected": true,
+                        "selected": false,
                         "text": "304",
                         "value": "304"
                     },
@@ -608,7 +642,7 @@
                         "value": "500"
                     }
                 ],
-                "query": "201, 304, 400, 404, 500",
+                "query": "200, 201, 304, 400, 404, 500",
                 "type": "custom"
             },
             {
@@ -643,13 +677,13 @@
         ]
     },
     "time": {
-        "from": "now-6h",
+        "from": "now-1h",
         "to": "now"
     },
     "timepicker": {},
     "timezone": "",
     "title": "Logs-2",
     "uid": "ddx5h6b4k5f5sc",
-    "version": 9,
+    "version": 14,
     "weekStart": ""
 }

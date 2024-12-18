@@ -8,16 +8,16 @@ import { LoggerModule } from 'nestjs-pino';
     LoggerModule.forRoot({
       pinoHttp: {
         name: 'TestService',
+        level: 'trace',
         transport: {
           targets: [
             {
-              level: 'debug',
+              level: 'trace',
               target: 'pino-pretty',
             },
             {
-              level: process.env.NODE_ENV !== 'production' ? 'debug' : 'warn',
+              level: process.env.NODE_ENV !== 'production' ? 'trace' : 'debug',
               target: 'pino-loki',
-
               options: {
                 batching: true,
                 interval: 5,
